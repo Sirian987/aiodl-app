@@ -1,19 +1,24 @@
 const express = require('express');
 const ytdl = require('ytdl-core');
 const axios = require('axios');
-const fetch = require('node-fetch');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
-const YOUTUBE_API_KEY = 'YOUR_YOUTUBE_API_KEY'; // Ganti dengan API Key Anda
+const YOUTUBE_API_KEY = 'AIzaSyB1bRFJEil3Mf_KUFhQiWXUWedAERxXbt4'; // Ganti dengan API Key Anda
 
 app.use(express.static('public'));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname,  'index.html'));
-});
+
 app.get('/search', async (req, res) => {
     const query = req.query.q;
-    const response = await fetch(`https://api.exonity.my.id/api/yts?query=${query}`);
-    res.json(response.result);
+    const response = await axios.get(`https://www.googleapis.com/youtube/v3/search`, {
+        params: {
+            part: 'snippet',
+            type: 'video',
+            q: query,
+            key: YOUTUBE_API_KEY
+        }
+    });
+    res.json(response.data);
 });
 
 app.get('/audio', (req, res) => {
