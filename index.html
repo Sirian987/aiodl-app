@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Audio Player</title>
+</head>
+<body>
+    <h1>YouTube Audio Player</h1>
+    <input type="text" id="searchQuery" placeholder="Search YouTube">
+    <button onclick="searchYouTube()">Search</button>
+    <ul id="results"></ul>
+    <audio id="audioPlayer" controls></audio>
+
+    <script>
+        async function searchYouTube() {
+            const query = document.getElementById('searchQuery').value;
+            const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+            data.items.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = item.snippet.title;
+                listItem.setAttribute('data-video-id', item.id.videoId);
+                listItem.onclick = () => playAudio(item.id.videoId);
+                results.appendChild(listItem);
+            });
+        }
+
+        async function playAudio(videoId) {
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.src = `/audio?url=https://www.youtube.com/watch?v=${videoId}`;
+            audioPlayer.play();
+        }
+    </script>
+</body>
+</html>
