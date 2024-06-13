@@ -7,7 +7,9 @@ const PORT = process.env.PORT || 3000;
 const YOUTUBE_API_KEY = 'YOUR_YOUTUBE_API_KEY'; // Ganti dengan API Key Anda
 
 app.use(express.static('public'));
-
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname,  'index.html'));
+});
 app.get('/search', async (req, res) => {
     const query = req.query.q;
     const response = await fetch(`https://api.exonity.my.id/api/yts?query=${query}`);
