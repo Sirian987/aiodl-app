@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Media Player with Search and Download</title>
+    <link rel="shortcut icon" href="https://cdn.sazumi.moe/file/vo4hgd.png" type="image/x-icon">
+<link rel="icon" href="https://cdn.sazumi.moe/file/vo4hgd.png" />
+<meta property="og:image" content="https://cdn.sazumi.moe/file/vo4hgd.png">  	
+    <title>ytdl-exonity</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -138,7 +141,7 @@
                 mediaPlayer.style.display = 'none';
                 youtubePlayer.style.display = 'block';
                 var videoId = extractYouTubeID(mediaUrl);
-                youtubePlayer.src = 'https://api.exonity.my.id/api/download?url=https://www.youtube.com/watch?v='+ videoId + '&resolution=18';
+                youtubePlayer.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&modestbranding=1&showinfo=0&controls=1&rel=0';
             } else {
                 audioPlayer.style.display = 'none';
                 youtubePlayer.style.display = 'none';
