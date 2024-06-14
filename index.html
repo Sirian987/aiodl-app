@@ -138,7 +138,7 @@
                 mediaPlayer.style.display = 'none';
                 youtubePlayer.style.display = 'block';
                 var videoId = extractYouTubeID(mediaUrl);
-                youtubePlayer.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&modestbranding=1&showinfo=0&controls=1&rel=0';
+                youtubePlayer.src = 'https://api.exonity.my.id/api/download?url=https://www.youtube.com/watch?v=${videoId}&resolution=18';
             } else {
                 audioPlayer.style.display = 'none';
                 youtubePlayer.style.display = 'none';
@@ -195,7 +195,7 @@
         var mediaType = document.getElementById('mediaType').value;
         var a = document.createElement('a');
         if (mediaType === 'video') {
-            a.href = 'https://api.exonity.my.id/download?url=' + mediaUrl;
+            a.href = 'https://api.exonity.my.id/api/download?url=' + mediaUrl + '&resolution=18';
             a.download = 'video.mp4';
         } else if (mediaType === 'audio') {
             a.href = 'https://api.exonity.my.id/audionya?url=' + mediaUrl;
