@@ -71,13 +71,21 @@
             padding: 10px;
             border-radius: 10px;
         }
-        .result {
+        .result-button {
             padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        .result:hover {
-            background-color: #e0e0e0;
+            margin: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
             cursor: pointer;
+            background-color: #f0ad4e;
+            color: white;
+            display: block;
+            width: calc(100% - 10px);
+            text-align: left;
+        }
+        .result-button:hover {
+            background-color: #ec971f;
         }
     </style>
 </head>
@@ -169,14 +177,14 @@
             .then(response => response.json())
             .then(data => {
                 data.items.forEach(item => {
-                    var resultDiv = document.createElement('div');
-                    resultDiv.className = 'result';
-                    resultDiv.textContent = item.snippet.title;
-                    resultDiv.onclick = function() {
+                    var resultButton = document.createElement('button');
+                    resultButton.className = 'result-button';
+                    resultButton.textContent = item.snippet.title;
+                    resultButton.onclick = function() {
                         document.getElementById('mediaUrl').value = 'https://www.youtube.com/watch?v=' + item.id.videoId;
                         loadMedia();
                     };
-                    searchResults.appendChild(resultDiv);
+                    searchResults.appendChild(resultButton);
                 });
             })
             .catch(error => console.error('Error fetching search results:', error));
@@ -191,7 +199,7 @@
             a.download = 'video.mp4';
         } else if (mediaType === 'audio') {
             a.href = 'https://api.exonity.my.id/audionya?url=' + mediaUrl;
-            a.download = 'audio.webm';
+            a.download = 'audio.mp3';
         }
         document.body.appendChild(a);
         a.click();
