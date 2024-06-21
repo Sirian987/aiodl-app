@@ -53,7 +53,7 @@ app.get('/audionya', async (req, res) => {
 
     try {
         const info = await ytdl.getInfo(url);
-        res.header('Content-Disposition', `attachment; filename="${info.videoDetails.title}.mp4"`);
+        res.header('Content-Disposition', `attachment; filename="${info.videoDetails.title}.mp3"`);
         ytdl(url, { filter: 'audioonly' }).pipe(res);
     } catch (error) {
         console.error(error);
