@@ -42,14 +42,21 @@ app.get('/search', async (req, res) => {
     });
     res.json(response.data);
 });
-
-app.get('/audio', (req, res) => {
+app.get('/audionya', async (req, res) => {
     const url = req.query.url;
-    const info = await ytdl.getInfo(url);
-            res.header('Content-Disposition', `attachment; filename="${info.videoDetails.title}.mp3"`);
-    ytdl(url, { filter: 'audioonly' }).pipe(res);
-});
+    if (!url) {
+        return res.status(400).send('URL video YouTube diperlukan.');
+    }
 
+    try {
+        const info = await ytdl.getInfo(url);
+        res.header('Content-Disposition', `attachment; filename="${info.videoDetails.title}.mp4"`);
+        ytdl(url, { filter: 'audioonly' }).pipe(res);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Terjadi kesalahan saat memproses permintaan Anda.');
+    }
+});
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
