@@ -7,6 +7,9 @@ const PORT = process.env.PORT || 3000;
 const YOUTUBE_API_KEY = 'AIzaSyB1bRFJEil3Mf_KUFhQiWXUWedAERxXbt4'; // Ganti dengan API Key Anda
 
 app.use(express.static('public'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname,  'index.html'));
+});
 app.get('/download', async (req, res) => {
     const url = req.query.url;
     const resolution = req.query.resolution;
