@@ -31,7 +31,7 @@ app.get('/download', async (req, res) => {
     }
 });
 app.get('/search', async (req, res) => {
-    const query = req.query.q;
+    const query = req.query.query;
     const response = await axios.get(`https://www.googleapis.com/youtube/v3/search`, {
         params: {
             part: 'snippet',
