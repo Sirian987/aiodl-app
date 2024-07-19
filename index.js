@@ -1,5 +1,5 @@
 const express = require('express');
-const ytdl = require('distube/ytdl-core');
+const ytdl = require('@distube/ytdl-core');
 const axios = require('axios');
 const path = require('path');
 const app = express();
