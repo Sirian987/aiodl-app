@@ -2,41 +2,242 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>YouTube DL + Search</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Downloader</title>
+  <style>
+    /* Reset basic styles */
+    body, h1, h3, p, input, button, video, audio {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    header {
+      background-color: #ff0000;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+    }
+
+    header button {
+      background-color: white;
+      color: #333;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    header button:hover {
+      background-color: #ccc;
+    }
+
+    /* Main Section */
+    main {
+      padding: 20px;
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .search-container input {
+      width: 70%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px 0 0 5px;
+    }
+
+    .search-container button {
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .search-container button:hover {
+      background-color: #e60000;
+    }
+
+    .results {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .video-item {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      width: calc(100% / 3 - 20px);
+      text-align: center;
+    }
+
+    .video-item img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .video-item button {
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      margin: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .video-item button:hover {
+      background-color: #e60000;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 8px;
+      text-align: center;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    video, audio {
+      margin: 10px 0;
+      max-width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
-  <div class="spinner" id="spinner"></div>
-  
   <header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo" class="logo">
     <h1>YouTube Downloader</h1>
-    <button id="theme-toggle">Dark Mode</button>
   </header>
-  
+
   <main>
     <div class="search-container">
-      <input id="search-input" type="text" placeholder="Search videos...">
-      <button id="search-btn">Search</button>
+      <input type="text" id="search-input" placeholder="Enter YouTube Video URL...">
+      <button onclick="handleSearch()">Search</button>
     </div>
-    <div id="results-container" class="results"></div>
+    <div class="results" id="results"></div>
   </main>
 
-  <!-- Modal Player -->
-  <div id="modal" class="modal">
+  <!-- Modal -->
+  <div class="modal" id="modal">
     <div class="modal-content">
-      <span class="close-btn" id="close-btn">&times;</span>
-      <h3>Media Player</h3>
-      <video id="video-player" controls style="display: none;"></video>
-      <audio id="audio-player" controls style="display: none;"></audio>
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <video id="video-player" controls></video>
+      <audio id="audio-player" controls></audio>
     </div>
   </div>
 
-  <footer>
-    <p>Powered by Google API & Exonity Tech</p>
-  </footer>
+  <script>
+    const modal = document.getElementById("modal");
+    const videoPlayer = document.getElementById("video-player");
+    const audioPlayer = document.getElementById("audio-player");
 
-  <script src="script.js"></script>
+    function closeModal() {
+      modal.style.display = "none";
+      videoPlayer.pause();
+      audioPlayer.pause();
+      videoPlayer.src = "";
+      audioPlayer.src = "";
+    }
+
+    async function handleSearch() {
+      const searchInput = document.getElementById("search-input").value.trim();
+      if (!searchInput) {
+        alert("Please enter a valid URL!");
+        return;
+      }
+
+      const videoId = searchInput.split("v=")[1]?.split("&")[0];
+      if (!videoId) {
+        alert("Invalid YouTube URL!");
+        return;
+      }
+
+      const resultsContainer = document.getElementById("results");
+      resultsContainer.innerHTML = ""; // Clear results
+      resultsContainer.innerHTML = `
+        <div class="video-item">
+          <h3>Video ID: ${videoId}</h3>
+          <button onclick="playMedia('video', '${videoId}')">Play Video</button>
+          <button onclick="playMedia('audio', '${videoId}')">Play Audio</button>
+        </div>
+      `;
+    }
+
+    async function playMedia(type, videoId) {
+      try {
+        const response = await fetch(
+          `https://zumfree-3-a1362be38cc2.herokuapp.com/api/get?url=https://www.youtube.com/watch?v=${videoId}`
+        );
+        const data = await response.json();
+
+        const mediaUrl = data.result.download_url;
+        if (type === "video") {
+          videoPlayer.src = mediaUrl;
+          videoPlayer.style.display = "block";
+          audioPlayer.style.display = "none";
+        } else {
+          audioPlayer.src = mediaUrl;
+          audioPlayer.style.display = "block";
+          videoPlayer.style.display = "none";
+        }
+        modal.style.display = "flex";
+      } catch (error) {
+        console.error("Error loading media:", error);
+        alert("Error loading media.");
+      }
+    }
+  </script>
 </body>
 </html>
