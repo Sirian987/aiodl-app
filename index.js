@@ -1,10 +1,52 @@
 const express = require('express');
 const ytdl = require('@distube/ytdl-core');
-const axios = require('axios');
+const fetch = require('node-fetch');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const YOUTUBE_API_KEY = 'AIzaSyB1bRFJEil3Mf_KUFhQiWXUWedAERxXbt4'; // Ganti dengan API Key Anda
+function Mp3(url) {
+  return new Promise((resolve, reject) => {
+    let title, image;
+    
+    const getDownloadId = () => {
+      return fetch(`https://ab.cococococ.com/ajax/download.php?copyright=0&format=mp3&url=${encodeURIComponent(url)}&api=dfcb6d76f2f6a9894gjkege8a4ab232222`)
+        .then(response => response.json());
+    };
+
+    const checkProgress = (id) => {
+      return fetch(`https://p.oceansaver.in/ajax/progress.php?id=${id}`)
+        .then(response => response.json());
+    };
+
+    const pollProgress = (id) => {
+      checkProgress(id).then(data => {
+        if (data.progress === 1000) {
+          resolve({
+            type: 'mp3 (128 kbps)',
+            title: title,
+            image: image,
+            download_url: data.download_url
+          });
+        } else {
+          setTimeout(() => pollProgress(id), 1000);
+        }
+      }).catch(reject);
+    };
+
+    getDownloadId()
+      .then(data => {
+        if (data.success && data.id) {
+          title = data.info.title;
+          image = data.info.image;
+          pollProgress(data.id);
+        } else {
+          reject(new Error('Gagal mendapatkan ID unduhan'));
+        }
+      })
+      .catch(reject);
+  });
+}
 
 app.use(express.static('public'));
 app.get('/', (req, res) => {
@@ -66,7 +108,7 @@ app.get('/api/get', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    let down = await ytmp4(message) 
+    let down = await Mp3(message) 
     res.status(200).json({
       status: 200,
       creator: "RIAN X EXONITY",
