@@ -44,7 +44,7 @@
     "g-i-s": "^2.1.6",
     "undici": "^6.6.2",
     "yt-search": "^2.10.3", 
-    "@distube/ytdl-core":"^4.13.5", 
+    "@distube/ytdl-core":"*", 
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "ssl-express-www": "^3.2.1"
