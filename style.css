@@ -1,0 +1,232 @@
+/* Reset basic styles */
+body, h1, h3, p, input, button, video, audio {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Header */
+header {
+  background-color: #ff0000;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .logo {
+  width: 120px;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+header button {
+  background-color: white;
+  color: #333;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+header button:hover {
+  background-color: #ccc;
+}
+
+/* Main Section */
+main {
+  padding: 20px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-container input {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px 0 0 5px;
+}
+
+.search-container button {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-container button:hover {
+  background-color: #e60000;
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.video-item {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  width: calc(100% / 3 - 20px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.video-item img {
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.video-item button {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.video-item button:hover {
+  background-color: #e60000;
+}
+
+/* Spinner */
+.spinner {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #ff0000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-content h3 {
+  margin-bottom: 10px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+video, audio {
+  margin: 10px 0;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 10px 0;
+  background-color: #222;
+  color: white;
+}
+
+/* Dark mode */
+body.dark {
+  background-color: #333;
+  color: white;
+}
+
+body.dark header {
+  background-color: #222;
+}
+
+body.dark header button {
+  background-color: #444;
+  color: white;
+}
+
+body.dark .search-container input {
+  background-color: #444;
+  color: white;
+  border-color: #555;
+}
+
+body.dark .search-container button {
+  background-color: #666;
+}
+
+body.dark .video-item {
+  background-color: #444;
+  border-color: #555;
+  color: white;
+}
+
+body.dark .modal-content {
+  background: #333;
+  color: white;
+}
