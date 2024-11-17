@@ -12,8 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^18.0.6",
-    "@siputzx/scraper": "^2.1.0",
-    "axios": "^1.6.8",
+    "node-fetch": "*",
+    "axios": "*",
     "yt-search": "^2.10.3", 
     "@distube/ytdl-core":"*", 
     "cors": "^2.8.5",
