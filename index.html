@@ -51,6 +51,76 @@
     main {
       padding: 20px;
     }
+  /* Popup AI */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 400px;
+      background-color: white;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      z-index: 1000;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .popup h3 {
+      margin-bottom: 20px;
+    }
+
+    .popup textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    .popup button {
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .popup button:hover {
+      background-color: #e60000;
+    }
+
+    .popup .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    /* Dark theme */
+    body.dark {
+      background-color: #121212;
+      color: #ffffff;
+    }   
 .spinner {
   display: none;
   position: fixed;
@@ -198,6 +268,7 @@ body.dark #theme-toggle {
     <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo" class="logo">
     <h1>YouTube Downloader</h1>
     <button id="themeToggle">Dark Mode</button>
+  <img src="https://cdn-icons-png.flaticon.com/512/709/709682.png" alt="Message Icon" id="message-icon">
   </header>
 
   <main>
@@ -220,12 +291,58 @@ body.dark #theme-toggle {
     </div>
   </div>
 
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="ai-popup">
+    <span class="close-btn" onclick="closePopup()">&times;</span>
+    <h3>AI Chat Assistant</h3>
+    <textarea id="chat-input" placeholder="Type your question here..."></textarea>
+    <button onclick="sendMessage()">Send</button>
+    <p id="chat-response"></p>
+  </div>
   <script>
     const spinner = document.getElementById("spinner");
     const modal = document.getElementById("modal");
     const videoPlayer = document.getElementById("video-player");
     const audioPlayer = document.getElementById("audio-player");
+const themeToggle = document.getElementById("theme-toggle");
+    const body = document.body;
+    const messageIcon = document.getElementById("message-icon");
+    const aiPopup = document.getElementById("ai-popup");
+    const overlay = document.getElementById("overlay");
+    const chatInput = document.getElementById("chat-input");
+    const chatResponse = document.getElementById("chat-response");
 
+    // Toggle Theme
+    themeToggle.addEventListener("click", () => {
+      body.classList.toggle("dark");
+    });
+
+    // Open AI Popup
+    messageIcon.addEventListener("click", () => {
+      aiPopup.style.display = "block";
+      overlay.style.display = "block";
+    });
+
+    // Close Popup
+    function closePopup() {
+      aiPopup.style.display = "none";
+      overlay.style.display = "none";
+    }
+
+    // Send Message to AI
+    function sendMessage() {
+      const userMessage = chatInput.value.trim();
+      if (!userMessage) {
+        alert("Please type a message!");
+        return;
+      }
+
+      chatResponse.textContent = "Thinking...";
+      setTimeout(() => {
+        // Simulated AI response
+        chatResponse.textContent = `AI Response to: "${userMessage}"`;
+      }, 1000);
+    }
     function closeModal() {
       modal.style.display = "none";
       videoPlayer.pause();
