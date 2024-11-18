@@ -257,8 +257,6 @@ spinner.style.display = "block";
         alert("Please enter keywords to search!");
         return;
       }
-spinner.style.display = "block";
-  setTimeout(() => (spinner.style.display = "none"), 1000);
       try {
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
