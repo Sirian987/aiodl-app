@@ -223,24 +223,16 @@ body.dark #theme-toggle {
   <script>
     document.addEventListener("DOMContentLoaded", () => {
   const spinner = document.getElementById("spinner");
-  const themeToggle = document.getElementById("theme-toggle");
-       let isDarkMode = false;
-
   // Show spinner on page load
   spinner.style.display = "block";
   setTimeout(() => (spinner.style.display = "none"), 1000);
 
-  // Theme toggle
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    isDarkMode = !isDarkMode;
-    themeToggle.textContent = isDarkMode ? "Light Mode" : "Dark Mode";
-  });
 
 
   // Close modal
   
 });
+    const spinner = document.getElementById("spinner");
     const modal = document.getElementById("modal");
     const videoPlayer = document.getElementById("video-player");
     const audioPlayer = document.getElementById("audio-player");
