@@ -345,8 +345,10 @@ const response = await fetch(
       setTimeout(() => {
         // Simulated AI response
         chatResponse.textContent = `AI Response to: "${data.result}"`;
-      }, 1000);
+      }, 5000);
     }
+ </script>   
+    <script>
     function closeModal() {
       modal.style.display = "none";
       videoPlayer.pause();
@@ -354,15 +356,13 @@ const response = await fetch(
       videoPlayer.src = "";
       audioPlayer.src = "";
     }
-
+         
     async function handleURL() {
       const urlInput = document.getElementById("url-input").value.trim();
       if (!urlInput) {
         alert("Please enter a valid YouTube URL!");
         return;
       }
-spinner.style.display = "block";
-  setTimeout(() => (spinner.style.display = "none"), 1000);
       const videoId = urlInput.split("v=")[1]?.split("&")[0];
       if (!videoId) {
         alert("Invalid YouTube URL!");
