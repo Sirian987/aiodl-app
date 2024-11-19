@@ -120,7 +120,12 @@
     body.dark {
       background-color: #121212;
       color: #ffffff;
-    }   
+    }
+.theme-toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+}   
 .spinner {
   display: none;
   position: fixed;
@@ -267,11 +272,11 @@ body.dark #theme-toggle {
 <header>
     <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo" class="logo">
     <h1>YouTube Downloader</h1>
-    <button id="themeToggle">Dark Mode</button>
-<button id="message-icon">A.I</button>
+  <div class="theme-toggle-container">
+<button id="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+<button id="theme-toggle" onclick="">A.I</button>
 </header>
-
-  <main>
+<main>
     <div class="search-container">
       <input type="text" id="url-input" placeholder="Enter YouTube Video URL...">
       <button onclick="handleURL()">Download by URL</button>
@@ -312,22 +317,24 @@ const themeToggle = document.getElementById("theme-toggle");
     const chatInput = document.getElementById("chat-input");
     const chatResponse = document.getElementById("chat-response");
 
-    // Toggle Theme
-    themeToggle.addEventListener("click", () => {
-      body.classList.toggle("dark");
-    });
+function toggleTheme() {
+      document.body.classList.toggle("dark");
+    }
 
     // Open AI Popup
-    messageIcon.addEventListener("click", () => {
-      aiPopup.style.display = "block";
-      overlay.style.display = "block";
-    });
+    function openPopup() {
+      document.getElementById("ai-popup").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+    }
 
     // Close Popup
     function closePopup() {
-      aiPopup.style.display = "none";
-      overlay.style.display = "none";
-    }
+      document.getElementById("ai-popup").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }                     
+    
+    // Close Popup
+    
 
     // Send Message to AI
     function sendMessage() {
@@ -347,8 +354,7 @@ const response = await fetch(
         chatResponse.textContent = `AI Response to: "${data.result}"`;
       }, 5000);
     }
- </script>   
-    <script>
+ 
     function closeModal() {
       modal.style.display = "none";
       videoPlayer.pause();
