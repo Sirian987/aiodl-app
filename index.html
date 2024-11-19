@@ -294,9 +294,7 @@ body.dark #theme-toggle {
       <video id="video-player" controls></video>
       <audio id="audio-player" controls></audio>
     </div>
-  </div>
-
-  <div class="overlay" id="overlay"></div>
+  <div class="overlay" id="overlay" onclick="closePopup()"></div>
   <div class="popup" id="ai-popup">
     <span class="close-btn" onclick="closePopup()">&times;</span>
     <h3>AI Chat Assistant</h3>
@@ -308,12 +306,7 @@ body.dark #theme-toggle {
     const spinner = document.getElementById("spinner");
     const modal = document.getElementById("modal");
     const videoPlayer = document.getElementById("video-player");
-    const audioPlayer = document.getElementById("audio-player");
-const themeToggle = document.getElementById("theme-toggle");
-    const body = document.body;
-    const messageIcon = document.getElementById("message-icon");
-    const aiPopup = document.getElementById("ai-popup");
-    const overlay = document.getElementById("overlay");
+    const audioPlayer = document.getElementById("audio-player"); overlay = document.getElementById("overlay");
     const chatInput = document.getElementById("chat-input");
     const chatResponse = document.getElementById("chat-response");
 
