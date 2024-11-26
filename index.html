@@ -293,9 +293,7 @@ body.dark #theme-toggle {
       <span class="close-btn" onclick="closeModal()">&times;</span>
       <video id="video-player" controls></video>
       <audio id="audio-player" controls></audio>
-      <button onclick="downloadMedia('video')" id="video-download">Download Video</button>
-    <button onclick="downloadMedia('audio')" id="audio-download">Download Audio</button>
-    </div>
+          </div>
   <div class="overlay" id="overlay" onclick="closePopup()"></div>
   <div class="popup" id="ai-popup">
     <span class="close-btn" onclick="closePopup()">&times;</span>
@@ -396,9 +394,7 @@ function toggleTheme() {
           videoPlayer.style.display = "none";
         }
         modal.style.display = "flex";
-        document.getElementById("video-source").src = mediaUrl;
-          document.getElementById("audio-source").src = mediaUrl;
-      } catch (error) {
+        } catch (error) {
         console.error("Error loading media:", error);
         alert("Error loading media.");
       }
