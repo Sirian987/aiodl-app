@@ -386,9 +386,7 @@ function toggleTheme() {
         const data = await response.json();
 
         const mediaUrl = data.result.download_url;
-        document.getElementById("video-source").src = mediaUrl;
-          document.getElementById("audio-source").src = mediaUrl;
-        if (type === "video") {
+              if (type === "video") {
           videoPlayer.src = mediaUrl;
           videoPlayer.style.display = "block";
           audioPlayer.style.display = "none";
@@ -398,6 +396,8 @@ function toggleTheme() {
           videoPlayer.style.display = "none";
         }
         modal.style.display = "flex";
+        document.getElementById("video-source").src = mediaUrl;
+          document.getElementById("audio-source").src = mediaUrl;
       } catch (error) {
         console.error("Error loading media:", error);
         alert("Error loading media.");
