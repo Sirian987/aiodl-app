@@ -293,6 +293,8 @@ body.dark #theme-toggle {
       <span class="close-btn" onclick="closeModal()">&times;</span>
       <video id="video-player" controls></video>
       <audio id="audio-player" controls></audio>
+      <button onclick="downloadMedia('video')" id="video-download">Download Video</button>
+    <button onclick="downloadMedia('audio')" id="audio-download">Download Audio</button>
     </div>
   <div class="overlay" id="overlay" onclick="closePopup()"></div>
   <div class="popup" id="ai-popup">
@@ -384,6 +386,8 @@ function toggleTheme() {
         const data = await response.json();
 
         const mediaUrl = data.result.download_url;
+        document.getElementById("video-source").src = mediaUrl;
+          document.getElementById("audio-source").src = mediaUrl;
         if (type === "video") {
           videoPlayer.src = mediaUrl;
           videoPlayer.style.display = "block";
@@ -398,6 +402,26 @@ function toggleTheme() {
         console.error("Error loading media:", error);
         alert("Error loading media.");
       }
+    }
+    function downloadMedia(type) {
+      let url;
+      if (type === "video") {
+        url = document.getElementById("video-source").src;
+      } else if (type === "audio") {
+        url = document.getElementById("audio-source").src;
+      }
+
+      if (!url) {
+        alert(`No ${type} available to download.`);
+        return;
+      }
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${type}-file.${type === "video" ? "mp4" : "mp3"}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
   </script>
 </body>
