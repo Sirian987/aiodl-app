@@ -5,6 +5,48 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const YOUTUBE_API_KEY = 'AIzaSyB1bRFJEil3Mf_KUFhQiWXUWedAERxXbt4'; // Ganti dengan API Key Anda
+function Mp4(url) {
+  return new Promise((resolve, reject) => {
+    let title, image;
+
+    const getDownloadId = () => {
+      return fetch(`https://ab.cococococ.com/ajax/download.php?copyright=0&format=360&url=${encodeURIComponent(url)}&api=dfcb6d76f2f6a9894gjkege8a4ab232222`)
+        .then(response => response.json());
+    };
+
+    const checkProgress = (id) => {
+      return fetch(`https://p.oceansaver.in/ajax/progress.php?id=${id}`)
+        .then(response => response.json());
+    };
+
+    const pollProgress = (id) => {
+      checkProgress(id).then(data => {
+        if (data.progress === 1000) {
+          resolve({
+            type: 'mp4 (360p)',
+            title: title,
+            image: image,
+            download_url: data.download_url
+          });
+        } else {
+          setTimeout(() => pollProgress(id), 1000);
+        }
+      }).catch(reject);
+    };
+
+    getDownloadId()
+      .then(data => {
+        if (data.success && data.id) {
+          title = data.info.title;
+          image = data.info.image;
+          pollProgress(data.id);
+        } else {
+          reject(new Error('Gagal mendapatkan ID unduhan'));
+        }
+      })
+      .catch(reject);
+  });
+}
 function Mp3(url) {
   return new Promise((resolve, reject) => {
     let title, image;
@@ -109,6 +151,22 @@ app.get('/api/get', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     let down = await Mp3(message) 
+    res.status(200).json({
+      status: 200,
+      creator: "RIAN X EXONITY",
+      result: down
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/convert', async (req, res) => {
+  try {
+    const message = req.query.url;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    let down = await Mp4(message) 
     res.status(200).json({
       status: 200,
       creator: "RIAN X EXONITY",
