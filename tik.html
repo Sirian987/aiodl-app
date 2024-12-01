@@ -215,17 +215,15 @@
 
       try {
         const response = await fetch(`https://zumfree-3-a1362be38cc2.herokuapp.com/api/convertez?url=${encodeURIComponent(link)}`);
-        const data = await response.json();
-
-        
+        const data = await response.json();        
 
         const videoData = {
           title: data.result.title,
           hdUrl: data.result.hdplay,
           nohdUrl: data.result.play,
           audioUrl: data.result.music,
-          sizeHd: convertFileSize(data.sizeHD),
-          sizeNohd: convertFileSize(data.sizeNoHD),
+          sizeHd: convertFileSize(data.result.size),
+          sizeNohd: convertFileSize(data.result.hd_size),
           duration: data.result.duration,
           author: data.result.author.nickname,
           likes: formatLikes(data.result.digg_count),
