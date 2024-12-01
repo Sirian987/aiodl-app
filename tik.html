@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download TikTok dan Upload File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .tabs {
+            display: flex;
+            background: #007bff;
+            color: white;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            background: #0056b3;
+        }
+        .tab.active {
+            background: #007bff;
+        }
+        .content {
+            padding: 20px;
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+        input[type="text"],
+        input[type="file"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('tiktok')">Download TikTok</div>
+            <div class="tab" onclick="switchTab('upload')">Upload File</div>
+        </div>
+
+        <!-- TikTok Download Content -->
+        <div class="content active" id="tiktok">
+            <h1>Download TikTok Video</h1>
+            <input type="text" id="tiktok-url" placeholder="Masukkan URL TikTok">
+            <button onclick="fetchData()">Start</button>
+        </div>
+
+        <!-- File Upload Content -->
+        <div class="content" id="upload">
+            <h1>Upload File</h1>
+            <input type="file" id="file-upload" accept="*">
+            <button onclick="uploadFile()">Upload</button>
+        </div>
+    </div>
+
+    <!-- Popup for TikTok Download -->
+    <div class="overlay" id="overlay" style="display:none;"></div>
+    <div class="popup" id="popup" style="display:none;">
+        <img id="thumbnail" src="" alt="Thumbnail">
+        <h3 id="title"></h3>
+        <button id="mp4-no-hd" onclick="download('no_hd')">MP4 (No HD)</button>
+        <button id="mp4-hd" onclick="download('hd')">MP4 (HD)</button>
+        <button id="mp3" onclick="download('mp3')">MP3</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function switchTab(tabId) {
+            // Handle tab switching
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
+
+            document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        async function fetchData() {
+            const url = document.getElementById('tiktok-url').value;
+            if (!url) {
+                alert('Masukkan URL TikTok!');
+                return;
+            }
+
+            try {
+                const response = await axios.get(`https://exonity.tech/api/tiktok2?url=${encodeURIComponent(url)}`);
+                const data = response.data;
+
+                // Menampilkan data ke dalam popup
+                document.getElementById('thumbnail').src = data.result.cover;
+                document.getElementById('title').innerText = data.result.title;
+
+                document.getElementById('mp4-no-hd').dataset.url = data.result.watermark;
+                document.getElementById('mp4-hd').dataset.url = data.result.no_watermark;
+                document.getElementById('mp3').dataset.url = data.result.music;
+
+                document.getElementById('popup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+            } catch (error) {
+                alert(`Gagal memuat data: ${error.response?.data?.message || error.message}`);
+            }
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('file-upload');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Pilih file untuk diupload!');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            axios.post('https://exonity.tech/cdn-upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            .then(response => {
+                alert('File berhasil diupload!', response.data);
+            })
+            .catch(error => {
+                alert(`Gagal mengupload file: ${error.response?.data?.message || error.message}`);
+            });
+        }
+    </script>
+</body>
+</html>
