@@ -222,8 +222,8 @@
           hdUrl: data.result.hdplay,
           nohdUrl: data.result.play,
           audioUrl: data.result.music,
-          sizeHd: convertFileSize(data.result.size),
-          sizeNohd: convertFileSize(data.result.hd_size),
+          sizeHd: convertFileSize(data.result.hd_size),
+          sizeNohd: convertFileSize(data.result.size),
           duration: data.result.duration,
           author: data.result.author.nickname,
           likes: formatLikes(data.result.digg_count),
@@ -231,7 +231,7 @@
 
         // Update UI
         document.getElementById('video-title').textContent = videoData.title;
-        document.getElementById('player').src = videoData.hdUrl;
+        document.getElementById('player').src = videoData.nohdUrl;
         document.getElementById('total-likes').textContent = videoData.likes;
         document.getElementById('info').textContent = `Size: ${videoData.sizeHd} (HD), ${videoData.sizeNohd} (noHD) | Duration: ${videoData.duration} | Author: ${videoData.author}`;
         document.getElementById('video-container').style.display = 'block';
