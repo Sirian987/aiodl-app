@@ -47,6 +47,31 @@ function Mp4(url) {
       .catch(reject);
   });
 }
+async function tiktok(query) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const encodedParams = new URLSearchParams();
+      encodedParams.set("url", query);
+      encodedParams.set("hd", "1");
+
+      const response = await axios({
+        method: "POST",
+        url: "https://tikwm.com/api/",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+          Cookie: "current_language=en",
+          "User-Agent":
+            "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36",
+        },
+        data: encodedParams,
+      });
+      const videos = response.data.data;
+      resolve(videos);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 function Mp3(url) {
   return new Promise((resolve, reject) => {
     let title, image;
@@ -151,6 +176,22 @@ app.get('/api/get', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     let down = await Mp3(message) 
+    res.status(200).json({
+      status: 200,
+      creator: "RIAN X EXONITY",
+      result: down
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/convertez', async (req, res) => {
+  try {
+    const message = req.query.url;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    let down = await tiktok(message) 
     res.status(200).json({
       status: 200,
       creator: "RIAN X EXONITY",
