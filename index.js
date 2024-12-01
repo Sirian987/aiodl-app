@@ -120,6 +120,9 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname,  'index.html'));
 });
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname,  'tik.html'));
+});
 app.get('/download', async (req, res) => {
     const url = req.query.url;
     const resolution = req.query.resolution;
