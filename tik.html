@@ -69,6 +69,15 @@
     background: rgba(0, 0, 0, 0.5);
     z-index: 10; /* Overlay berada di belakang popup */
 }
+.info {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: left;
+        }
+.info strong {
+            display: block;
+            margin-bottom: 5px;
+        }    
     </style>
 </head>
 <body>
@@ -79,22 +88,27 @@
     </div>
 
     <!-- Popup -->
-    <div class="overlay" id="overlay"></div>
-    <div class="overlay" id="overlay" onclick="closePopup()"></div>
-<div class="popup" id="popup">
-    <img id="thumbnail" alt="Thumbnail">
-    <h3 id="title"></h3>
-    <a id="mp4-no-hd" href="#" download>
-        <button>MP4 (No HD)</button>
-    </a>
-    <a id="mp4-hd" href="#" download>
-        <button>MP4 (HD)</button>
-    </a>
-    <a id="mp3" href="#" download>
-        <button>MP3</button>
-    </a>
-    <button onclick="closePopup()">Close</button>
-</div>
+     <div class="overlay" id="overlay" onclick="closePopup()"></div>
+    <div class="popup" id="popup">
+        <img id="thumbnail" alt="Thumbnail">
+        <h3 id="title"></h3>
+        <div class="info">
+            <strong>Creator: <span id="creator"></span></strong>
+            <strong>Duration: <span id="duration"></span></strong>
+            <strong>Size (No HD): <span id="size-no-hd"></span></strong>
+            <strong>Size (HD): <span id="size-hd"></span></strong>
+        </div>
+        <a id="mp4-no-hd" href="#" download>
+            <button>MP4 (No HD)</button>
+        </a>
+        <a id="mp4-hd" href="#" download>
+            <button>MP4 (HD)</button>
+        </a>
+        <a id="mp3" href="#" download>
+            <button>MP3</button>
+        </a>
+        <button onclick="closePopup()">Close</button>
+    </div>
 
     <script>
         async function fetchData() {
@@ -116,7 +130,10 @@
                 // Menampilkan data pada popup
                 document.getElementById('thumbnail').src = data.result.cover;
                 document.getElementById('title').innerText = data.result.title;
-
+                document.getElementById('creator').innerText = data.result.author || "Tidak diketahui";
+                document.getElementById('duration').innerText = formatDuration(data.result.duration);
+                document.getElementById('size-no-hd').innerText = formatSize(data.result.size);
+                document.getElementById('size-hd').innerText = formatSize(data.result.hd_size);
                 document.getElementById('mp4-no-hd').href = data.result.play;
                 document.getElementById('mp4-hd').href = data.result.hdplay;
                 document.getElementById('mp3').href = data.result.music;
@@ -136,6 +153,18 @@
             document.getElementById('popup').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
         }
+        function formatDuration(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}m ${remainingSeconds}s`;
+        }
+
+        function formatSize(size) {
+            if (!size) return "Tidak tersedia";
+            const kb = size / 1024;
+            const mb = kb / 1024;
+            return mb >= 1 ? `${mb.toFixed(2)} MB` : `${kb.toFixed(2)} KB`;
+                    }
     </script>
 </body>
 </html>
