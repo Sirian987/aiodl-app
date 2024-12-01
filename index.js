@@ -120,7 +120,7 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname,  'index.html'));
 });
-app.get('/', (req, res) => {
+app.get('/tik', (req, res) => {
   res.sendFile(path.join(__dirname,  'tik.html'));
 });
 app.get('/download', async (req, res) => {
