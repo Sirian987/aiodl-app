@@ -379,7 +379,7 @@ function toggleTheme() {
     async function playMedia(type, videoId) {
       try {
         const response = await fetch(
-          `https://zumfree-3-a1362be38cc2.herokuapp.com/api/get?url=https://www.youtube.com/watch?v=${videoId}`
+          `/api/get?url=https://www.youtube.com/watch?v=${videoId}`
         );
         const data = await response.json();
 
@@ -389,7 +389,7 @@ function toggleTheme() {
           videoPlayer.style.display = "block";
           audioPlayer.style.display = "none";
         } else {
-          audioPlayer.src = mediaUrl;
+          audioPlayer.src = mediaUrl2;
           audioPlayer.style.display = "block";
           videoPlayer.style.display = "none";
         }
