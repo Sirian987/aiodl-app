@@ -48,6 +48,20 @@ function Mp4(url) {
       .catch(reject);
   });
 }
+async function ycdn(urln) {
+const { data } = await axios.get(`https://ycdn.savetube.su/info?url=${urln}`) 
+const { title, thumbnail, url, key } = data.data
+const req = await axios.get(`https://ycdn.savetube.su/download/audio/128/${key}`) 
+const req2 = await axios.get(`https://ycdn.savetube.su/download/video/360/${key}`) 
+  return {
+title: title, 
+thumb: thumbnail, 
+url: url, 
+dl: req.data.data.downloadUrl, 
+dl2: req2.data.data.downloadUrldl
+
+}
+}
 async function tiktok(query) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -179,7 +193,7 @@ app.get('/api/get', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    let down = await Mp3(message) 
+    let down = await ycdn(message) 
     res.status(200).json({
       status: 200,
       creator: "RIAN X EXONITY",
