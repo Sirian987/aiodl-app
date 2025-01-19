@@ -382,8 +382,9 @@ function toggleTheme() {
           `/api/get?url=https://www.youtube.com/watch?v=${videoId}`
         );
         const data = await response.json();
+const mediaUrl2 = data.result.dl2;
 
-        const mediaUrl = data.result.download_url;
+        const mediaUrl = data.result.dl;
               if (type === "video") {
           videoPlayer.src = mediaUrl;
           videoPlayer.style.display = "block";
