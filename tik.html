@@ -214,7 +214,7 @@
       loading.style.display = 'block';
 
       try {
-        const response = await fetch(`https://zumfree-3-a1362be38cc2.herokuapp.com/api/convertez?url=${encodeURIComponent(link)}`);
+        const response = await fetch(`/api/convertez?url=${encodeURIComponent(link)}`);
         const data = await response.json();        
 
         const videoData = {
