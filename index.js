@@ -239,10 +239,11 @@ filenameStyle: 'pretty',
                        audio: response.data.url, 
                        video: responsen.data.url
                      }
+    
     res.status(200).json({
       status: 200,
       creator: "RIAN X EXONITY",
-      result: 
+      result: down
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
