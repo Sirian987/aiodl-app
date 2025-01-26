@@ -62,6 +62,29 @@ dl2: req2.data.data.downloadUrldl
 
 }
 }
+async function FbDownload(vid_url) {
+  try {
+    const data = {
+      url: vid_url,
+    };
+    const searchParams = new URLSearchParams();
+    searchParams.append("url", data.url);
+    const response = await fetch(
+      "https://facebook-video-downloader.fly.dev/app/main.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: searchParams.toString(),
+      },
+    );
+    const responseData = await response.json();
+    return responseData.result;
+  } catch (e) {
+    return null;
+  }
+}
 async function tiktok(query) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -193,11 +216,33 @@ app.get('/api/get', async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
-    let down = await ycdn(message) 
+const response = await axios.post('https://cobalt.excdn.us.kg/exonity', {
+                    url: message,                     
+  downloadMode: "audio"
+                }, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                })
+const responsen = await axios.post('https://cobalt.excdn.us.kg/exonity', {
+                    url: message,   
+filenameStyle: 'pretty', 
+                   videoQuality: `360`
+                }, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                })
+                     let down = {
+                       audio: response.data.url, 
+                       video: responsen.data.url
+                     }
     res.status(200).json({
       status: 200,
       creator: "RIAN X EXONITY",
-      result: down
+      result: 
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -210,6 +255,22 @@ app.get('/api/convertez', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     let down = await tiktok(message) 
+    res.status(200).json({
+      status: 200,
+      creator: "RIAN X EXONITY",
+      result: down
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/fbfaster', async (req, res) => {
+  try {
+    const message = req.query.url;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    let down = await FbDownload(message) 
     res.status(200).json({
       status: 200,
       creator: "RIAN X EXONITY",
