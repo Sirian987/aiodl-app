@@ -3,6 +3,13 @@ const ytdl = require('@distube/ytdl-core');
 const fetch = require('node-fetch');
 const axios = require('axios');
 const path = require('path');
+var {
+  ytDonlodMp3,
+  ytDonlodMp4,
+  ytPlayMp3,
+  ytPlayMp4,
+  ytSearch
+} = require("./yt");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const YOUTUBE_API_KEY = 'AIzaSyB1bRFJEil3Mf_KUFhQiWXUWedAERxXbt4'; // Ganti dengan API Key Anda
@@ -288,6 +295,38 @@ app.get('/api/convert', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
     }
     let down = await Mp4(message) 
+    res.status(200).json({
+      status: 200,
+      creator: "RIAN X EXONITY",
+      result: down
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/init3', async (req, res) => {
+  try {
+    const message = req.query.url;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    let down = await ytDonlodMp3(message) 
+    res.status(200).json({
+      status: 200,
+      creator: "RIAN X EXONITY",
+      result: down
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/mp4', async (req, res) => {
+  try {
+    const message = req.query.url;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    let down = await ytDonlodMp4(message) 
     res.status(200).json({
       status: 200,
       creator: "RIAN X EXONITY",
