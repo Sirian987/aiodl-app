@@ -16,7 +16,8 @@
     "node-fetch": "^2.7.0",
     "axios": "*",
     "yt-search": "^2.10.3", 
-    "@distube/ytdl-core":"*", 
+    "ytdl-core": "npm:@distube/ytdl-core@4.16.0", 
+    "@distube/ytdl-core":"^4.16.0", 
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "ssl-express-www": "^3.2.1"
